@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+.sticky-navbar {
+    @apply bg-white fixed;
+}
+
+.nav-link {
+    @apply hover:text-primary;
+}
