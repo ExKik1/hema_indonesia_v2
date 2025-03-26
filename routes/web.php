@@ -17,6 +17,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/', [MainController::class, 'index']);
+Route::get('/about', [MainController::class, 'about']);
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {});

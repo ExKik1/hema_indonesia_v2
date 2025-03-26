@@ -10,4 +10,9 @@ class MainController extends Controller
     {
         return view('main.main-content');
     }
+
+    public function about()
+    {
+        return view('main.about');
+    }
 }
