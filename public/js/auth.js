@@ -16,44 +16,6 @@ passwordIcon.addEventListener("click", function () {
     }
 });
 
-// sweetalert
-document.addEventListener("DOMContentLoaded", function () {
-    let successAuth = document.querySelector(
-        'meta[name="success_auth"]'
-    )?.content;
-    let error = document.querySelector('meta[name="error"]')?.content;
-    let isNotSignIn = document.querySelector(
-        'meta[name="isNotSignIn"]'
-    )?.content;
-    let errors = JSON.parse(
-        document.querySelector('meta[name="errors"]')?.content || "[]"
-    );
-
-    if (successAuth) {
-        Swal.fire({
-            title: successAuth,
-            icon: "success",
-        });
-    }
-
-    if (error) {
-        Swal.fire({
-            title: error,
-            icon: "error",
-        });
-    }
-
-    if (errors.length > 0) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            html:
-                "<ul>" + errors.map((e) => `<li>${e}</li>`).join("") + "</ul>",
-            confirmButtonText: "OK",
-        });
-    }
-});
-
 // hapus history dan cache
 document.addEventListener("DOMContentLoaded", function () {
     history.replaceState(null, null, location.href);

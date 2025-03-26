@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="success" content="{{ session('success') }}">
+    <meta name="success_timer" content="{{ session('success_timer') }}">
+    <meta name="error" content="{{ session('error') }}">
+    <meta name="errors" content='@json($errors->all())'>
     <title>@yield('title_web')</title>
     {{-- main css --}}
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" />
@@ -11,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
     <!-- swiper css -->
     <link rel="stylesheet" href="{{ asset('library/swiper/swiper-bundle.min.css') }}" />
+    <!-- sweetalert css -->
+    <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}" />
     <!-- link font icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
@@ -131,14 +137,15 @@
                 <div class="block">
                     <h4 class="font-medium mb-2">News Letter</h4>
                     <p class="text-sm">Subscribe to receive updates, access to exclusive deals, and more.</p>
-                    <div class="block text-sm mt-3">
-                        <input type="text"
+                    <form action="{{ route('newsEmailPost') }}" method="post" class="block text-sm mt-3">
+                        @csrf
+                        <input type="text" autocomplete="off"
                             class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none"
-                            name="" id="" placeholder="E-mail">
+                            name="email" id="email" placeholder="E-mail">
                         <button
                             class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 rounded-sm font-medium tracking-widest inline-block mt-3 px-4 py-[10px] outline-none text-white"
-                            type="button">Subscribe</button>
-                    </div>
+                            type="submit">Subscribe</button>
+                    </form>
                 </div>
             </div>
             </div>
@@ -168,7 +175,9 @@
     </footer>
 
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/alert.js') }}"></script>
     <script>
         const hamburger = document.getElementById("hamburger");
         const closeNavbar = document.getElementById("close_navbar");

@@ -38,10 +38,10 @@ class AuthenticationController extends Controller
             $user = Auth::user();
             if ($user && $user->status == 'active') {
                 if ($user->role == 'admin') {
-                    Session::flash('success_auth', 'Sign In berhasil');
+                    Session::flash('success_timer', 'Sign In berhasil');
                     return redirect('/dashboard');
                 } else if ($user->role == 'customer') {
-                    Session::flash('success_auth', 'Sign In berhasil');
+                    Session::flash('success_timer', 'Sign In berhasil');
                     return redirect('/');
                 }
             } else if ($user->status == 'inactive') {
@@ -94,7 +94,7 @@ class AuthenticationController extends Controller
         ]);
 
         if ($user) {
-            Session::flash('success_auth', 'Berhasil untuk membuat akun');
+            Session::flash('success', 'Berhasil untuk membuat akun');
             return redirect('/auth/sign-in');
         } else {
             Session::flash('error', 'Tidak berhasil untuk membuat akun');
@@ -107,7 +107,7 @@ class AuthenticationController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        Session::flash('success_auth', 'Berhasil Sign Out');
+        Session::flash('success', 'Berhasil Sign Out');
         return redirect()->to('/auth/sign-in')->withHeaders([
             'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
             'Pragma' => 'no-cache',

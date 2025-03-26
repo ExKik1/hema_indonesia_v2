@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="success_auth" content="{{ session('success_auth') }}">
+    <meta name="success" content="{{ session('success') }}">
     <meta name="error" content="{{ session('error') }}">
-    <meta name="isNotSignIn" content="{{ session('isNotSignIn') }}">
     <meta name="errors" content='@json($errors->all())'>
     <title>Sign Up | Hema.Indonesia</title>
     {{-- Auth css --}}
@@ -86,6 +85,7 @@
 
     <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/auth.js') }}"></script>
+    <script src="{{ asset('js/alert.js') }}"></script>
 
 </body>
 
