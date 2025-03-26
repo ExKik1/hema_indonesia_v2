@@ -43,13 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (isNotSignIn) {
-        Swal.fire({
-            title: isNotSignIn,
-            icon: "error",
-        });
-    }
-
     if (errors.length > 0) {
         Swal.fire({
             icon: "error",

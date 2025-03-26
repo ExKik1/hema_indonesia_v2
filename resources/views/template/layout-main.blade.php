@@ -25,52 +25,58 @@
             <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden">
                 <i class="fa-solid fa-bars-staggered" id="hamburger"></i>
             </div>
-            <a href="{{ url('/') }}" class="text-xl sm:text-2xl font-bold">
-                <span class="text-primary">Hema</span>.Indonesia
-            </a>
-            <div id="nav-menu"
-                class="absolute top-0 left-[-100%] w-full min-h-[100vh] bg-white lg:backdrop-blur-none flex items-start justify-start p-6 lg:p-0 duration-300 z-50 overflow-hidden lg:static lg:min-h-fit lg:bg-transparent lg:w-auto">
-                <ul class="flex flex-col w-full lg:items-center lg:gap-8 lg:flex-row">
-                    <h5 class="font-bold lg:hidden text-lg inline-block absolute top-6 left-6">
-                        <span class="text-primary">Hema</span>.Indonesia
-                    </h5>
-                    <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden inline-block absolute top-6 right-6">
-                        <i class="fa-solid fa-x" id="close_navbar"></i>
-                    </div>
-                    <li class="mt-20 lg:mt-0 border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a
-                            href="" class="nav-link">Home</a></li>
-                    <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4 outline-none">
-                        <a href="" class="nav-link">Tentang</a>
-                    </li>
-                    <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4">
-                        <a href="" class="nav-link">Produk</a>
-                    </li>
-                    <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
-                            class="nav-link">Galeri</a></li>
-                    <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
-                            class="nav-link">Order</a></li>
-                    <li class="w-full inline-block mt-6 py-4">
-                        <div class="text-lg sm:2xl lg:hidden cursor-pointer z-10 flex gap-4">
-                            @if (auth()->check())
-                                <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
-                                    href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
-                                <form
-                                    class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
-                                    action="{{ route('logout') }}" method="post">
-                                    @csrf
-                                    <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>
-                                </form>
-                            @endif
+            <div class="flex gap-16 items-center">
+                <a href="{{ url('/') }}" class="text-xl sm:text-2xl font-bold">
+                    <span class="text-primary">Hema</span>.Indonesia
+                </a>
+                <div id="nav-menu"
+                    class="absolute top-0 left-[-100%] w-full min-h-[100vh] bg-white lg:backdrop-blur-none flex items-start justify-start p-6 lg:p-0 duration-300 z-50 overflow-hidden lg:static lg:min-h-fit lg:bg-transparent lg:w-auto">
+                    <ul class="flex flex-col w-full lg:items-center lg:gap-6 lg:flex-row">
+                        <h5 class="font-bold lg:hidden text-lg inline-block absolute top-6 left-6">
+                            <span class="text-primary">Hema</span>.Indonesia
+                        </h5>
+                        <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden inline-block absolute top-6 right-6">
+                            <i class="fa-solid fa-x" id="close_navbar"></i>
                         </div>
-                    </li>
-                </ul>
-
+                        <li class="mt-20 lg:mt-0 border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a
+                                href="" class="nav-link">Beranda</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4">
+                            <a href="" class="nav-link">Produk</a>
+                        </li>
+                        <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
+                                class="nav-link">Pesanan</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4 outline-none">
+                            <a href="" class="nav-link">Tentang</a>
+                        </li>
+                        <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
+                                class="nav-link">Galeri</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
+                                class="nav-link">FAQ</a></li>
+                        <li class="w-full inline-block mt-6 py-4">
+                            <div class="text-lg sm:2xl lg:hidden cursor-pointer z-10 flex gap-4">
+                                @if (auth()->check())
+                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
+                                        href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
+                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
+                                        href="{{ url('/') }}"><i class="far fa-heart"></i></a>
+                                    <form
+                                        class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
+                                        action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>
+                                    </form>
+                                @endif
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="text-lg sm:2xl cursor-pointer z-10 flex gap-5">
                 @if (auth()->check())
                     <a href="{{ url('/profile') }}"><i class="far fa-user"></i></a>
                     <a class="hidden lg:inline-block" href="{{ url('/') }}"><i
                             class="fas fa-cart-shopping"></i></a>
+                    <a class="hidden lg:inline-block" href="{{ url('/') }}"><i class="far fa-heart"></i></a>
                     <form class="hidden lg:inline-block" action="{{ route('logout') }}" method="post">
                         @csrf
                         <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>
@@ -114,11 +120,12 @@
                 <div class="block">
                     <h4 class="font-medium mb-2">Permalinks</h4>
                     <div class="flex gap-2 flex-col text-sm">
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Home</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
+                        <a href="" class="nav-link hover:translate-x-1 duration-300">Beranda</a>
                         <a href="" class="nav-link hover:translate-x-1 duration-300">Produk</a>
+                        <a href="" class="nav-link hover:translate-x-1 duration-300">Cek Pesanan</a>
                         <a href="" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Order</a>
+                        <a href="" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
+                        <a href="" class="nav-link hover:translate-x-1 duration-300">FAQ</a>
                     </div>
                 </div>
                 <div class="block">
