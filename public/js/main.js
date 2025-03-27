@@ -170,3 +170,15 @@ document.addEventListener("DOMContentLoaded", function () {
     showProducts(currentPage);
     updatePagination();
 });
+
+// magic grid
+document.addEventListener("DOMContentLoaded", function () {
+    let magicGrid = new MagicGrid({
+        container: "#content_gallery",
+        animate: true,
+        gutter: 10,
+        static: true,
+        useMin: true,
+    });
+    magicGrid.listen();
+});

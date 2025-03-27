@@ -19,6 +19,7 @@ Route::prefix('auth')->group(function () {
 Route::get('/', [MainController::class, 'index']);
 Route::post('/news-email', [MainController::class, 'news_email'])->name('newsEmailPost');
 Route::get('/about', [MainController::class, 'about']);
+Route::get('/gallery', [MainController::class, 'gallery']);
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {});

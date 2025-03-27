@@ -30,4 +30,9 @@ class MainController extends Controller
     {
         return view('main.about');
     }
+
+    public function gallery()
+    {
+        return view('main.gallery');
+    }
 }

@@ -54,8 +54,8 @@
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4 outline-none">
                             <a href="{{ url('/about') }}" class="nav-link">Tentang</a>
                         </li>
-                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a href=""
-                                class="nav-link">Galeri</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a
+                                href="{{ url('/gallery') }}" class="nav-link">Galeri</a></li>
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a href=""
                                 class="nav-link">FAQ</a></li>
                         <li class="w-full inline-block mt-6 py-4">
@@ -128,9 +128,9 @@
                     <div class="flex gap-2 flex-col text-sm">
                         <a href="{{ url('/') }}" class="nav-link hover:translate-x-1 duration-300">Beranda</a>
                         <a href="" class="nav-link hover:translate-x-1 duration-300">Produk</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Cek Pesanan</a>
-                        <a href="{{ url('/about') }}" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
+                        <a href="" class="nav-link hover:translate-x-1 duration-300">Pesanan</a>
+                        <a href="{{ url('/about') }}" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
+                        <a href="{{ url('/gallery') }}" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
                         <a href="" class="nav-link hover:translate-x-1 duration-300">FAQ</a>
                     </div>
                 </div>
@@ -176,6 +176,7 @@
 
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('library/magic-grid/magic-grid.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/alert.js') }}"></script>
     <script>
