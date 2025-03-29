@@ -136,7 +136,6 @@ div#global-loader,
 .modal .close,
 .modal .btn-close,
 .modal-barcode ul,
-.productimgname,
 .sidebar .sub-menu a,
 .sidebar .nav-link,
 .sidebar .sidebar-menu > ul > li > a,
@@ -295,7 +294,6 @@ div#global-loader,
 .modal .close,
 .modal .btn-close,
 .modal-barcode ul,
-.productimgname,
 .sidebar .nav-items .nav-link,
 .sidebar .sub-menu a,
 .sidebar .nav-link,
@@ -773,7 +771,6 @@ div#global-loader,
 .modal .close,
 .modal .btn-close,
 .modal-barcode ul,
-.productimgname,
 .sidebar .sub-menu a,
 .sidebar .nav-link,
 .sidebar .sidebar-menu > ul > li > a,
@@ -932,7 +929,6 @@ div#global-loader,
 .modal .close,
 .modal .btn-close,
 .modal-barcode ul,
-.productimgname,
 .sidebar .nav-items .nav-link,
 .sidebar .sub-menu a,
 .sidebar .nav-link,
@@ -3652,7 +3648,7 @@ hr {
 }
 .profilename .profileset .profilesets {
     margin-left: 10px;
-} 
+}
 
 .profilename .dropdown-item {
     padding: 8px 5px !important;
@@ -4766,13 +4762,6 @@ span.select2-container.select2-container--default.select2-container--open {
 .dataTables_length {
     float: left;
     font-size: 12px;
-}
-.productimgname img {
-    margin-right: 10px;
-}
-.productimgname a {
-    color: #212b36;
-    font-weight: 500;
 }
 .form-group .calc-no {
     width: 50px !important;
