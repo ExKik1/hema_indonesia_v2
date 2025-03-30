@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     let successAlert = document.querySelector('meta[name="success"]')?.content;
-    let successTimer = document.querySelector('meta[name="success_timer"]')?.content;
+    let successTimer = document.querySelector(
+        'meta[name="success_timer"]'
+    )?.content;
     let error = document.querySelector('meta[name="error"]')?.content;
     let errors = JSON.parse(
         document.querySelector('meta[name="errors"]')?.content || "[]"

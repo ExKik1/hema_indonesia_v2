@@ -7,7 +7,7 @@
             <h6>View/Search pelanggan</h6>
         </div>
         <div class="page-btn">
-            <a href="{{ url('/customer/add-customer') }}" class="btn btn-primary">
+            <a href="{{ url('/customer/add-customer') }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-plus-lg me-1"></i> Tambah pelanggan
             </a>
         </div>

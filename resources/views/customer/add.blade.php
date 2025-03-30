@@ -10,7 +10,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('customerPost') }}" method="post">
+            <form action="{{ route('customerPost') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-lg-6 col-sm-6 col-12">
@@ -82,8 +82,13 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label>Profile</label>
-                            <input type="file" value="{{ old('profile_img') }}" name="profile_img" id="profile_img"
-                                autocomplete="off">
+                            <div class="image-upload">
+                                <input name="profile_img" id="file_drop" type="file" onchange="updateFileName()">
+                                <div class="image-uploads" id="upload-area">
+                                    <img src="{{ asset('admin/img/icons/upload.svg') }}" alt="Upload Icon">
+                                    <h4 id="file-name">Drag and drop a file to upload</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-12">

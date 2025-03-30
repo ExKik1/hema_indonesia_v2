@@ -29,6 +29,7 @@ class DataMasterController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
+            'profile_img' => 'image|mimes:jpeg,png,jpg|max:1024',
         ], [
             'first_name.required' => 'Input first name harus diisi',
             'first_name.string' => 'Input first name harus diisi dengan string',
@@ -39,48 +40,33 @@ class DataMasterController extends Controller
             'email.unique' => 'Email tersebut sudah tersedia',
             'password.required' => 'Input password harus diisi',
             'password.min' => 'Input password minimal 8 karakter',
+            'profile_img.image' => 'File harus berupa gambar.',
+            'profile_img.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'profile_img.max' => 'Ukuran gambar maksimal 1MB.',
         ]);
 
         if ($validator->fails()) return redirect('/customer/add-customer')->withErrors($validator)->withInput();
 
-        $nama_profile = 'default_profile.jpg';
         if ($request->hasFile('profile_img')) {
             $file = $request->file('profile_img');
             $nama_profile = 'profile_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
             $file->move('uploads/profile', $nama_profile);
-
-            User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'password' => Hash::make($request->input('password')),
-                'no_telp' => $request->no_telp,
-                'date_birth' => $request->date_birth,
-                'no_telp' => $request->no_telp,
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'address' => $request->address,
-                'status' => $request->status,
-                'role' => 'customer',
-                'profile_img' => $nama_profile
-            ]);
-        } else {
-            User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'password' => Hash::make($request->input('password')),
-                'no_telp' => $request->no_telp,
-                'date_birth' => $request->date_birth,
-                'no_telp' => $request->no_telp,
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'address' => $request->address,
-                'status' => $request->status,
-                'role' => 'customer',
-                'profile_img' => 'default_profile.jpg'
-            ]);
         }
+        User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->input('password')),
+            'no_telp' => $request->no_telp,
+            'date_birth' => $request->date_birth,
+            'no_telp' => $request->no_telp,
+            'gender' => $request->gender,
+            'age' => $request->age,
+            'address' => $request->address,
+            'status' => $request->status,
+            'role' => 'customer',
+            'profile_img' => $nama_profile ?? 'default_profile.jpg'
+        ]);
 
         return redirect('/customer')->with('success', 'Tambah data pelanggan berhasil');
     }
@@ -98,8 +84,9 @@ class DataMasterController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $data->id,
             'password' => 'required|min:8',
+            'profile_img' => 'image|mimes:jpeg,png,jpg|max:1024',
         ], [
             'first_name.required' => 'Input first name harus diisi',
             'first_name.string' => 'Input first name harus diisi dengan string',
@@ -109,22 +96,34 @@ class DataMasterController extends Controller
             'email.email' => 'Input email harus diisi format @',
             'email.unique' => 'Email tersebut sudah tersedia',
             'password.required' => 'Input password harus diisi',
-            'password.min' => 'Input password minimal 8 karakter'
+            'password.min' => 'Input password minimal 8 karakter',
+            'profile_img.image' => 'File harus berupa gambar.',
+            'profile_img.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'profile_img.max' => 'Ukuran gambar maksimal 1MB.',
         ]);
 
         if ($validator->fails()) return redirect('/customer/edit-customer/' . strtolower($data->email))->withErrors($validator)->withInput();
 
+        $nama_profile = $data->profile_img;
+        if ($request->hasFile('profile_img')) {
+            $file = $request->file('profile_img');
+            $nama_profile = 'profile_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/profile', $nama_profile);
+        }
+
         $data->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => $request->password,
+            'email' => $request->filled('email') ? $request->input('email') : $data->email,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $data->password,
+            'no_telp' => $request->no_telp,
+            'date_birth' => $request->date_birth,
             'no_telp' => $request->no_telp,
             'gender' => $request->gender,
             'age' => $request->age,
             'address' => $request->address,
-            'profile_img' => $request->profile_img,
-            'status' => $request->status
+            'status' => $request->status,
+            'profile_img' => $nama_profile
         ]);
 
         return redirect('/customer')->with('success', 'Ubah data pelanggan berhasil');
@@ -134,7 +133,7 @@ class DataMasterController extends Controller
     {
         $data = User::where('email', $email)->firstOrFail();
         $data->delete();
-        return redirect('/categories')->with('success', 'Hapus data pelanggan berhasil');
+        return redirect('/customer')->with('success', 'Hapus data pelanggan berhasil');
     }
 
     public function categoriesIndex()
