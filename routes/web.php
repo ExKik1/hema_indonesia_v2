@@ -63,6 +63,15 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyDestroy'])->name('galleryCompanyDelete');;
             Route::put('/status-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyStatusUpdate'])->name('galleryCompanyStatusPut');;
         });
+        Route::get('/product-list', [DataMasterController::class, 'productListIndex']);
+        Route::prefix('product-list')->group(function () {
+            Route::get('/add-product-list', [DataMasterController::class, 'productListAdd']);
+            Route::post('/add-product-list', [DataMasterController::class, 'productListStore'])->name('productListPost');
+            Route::get('/edit-product-list/{code_product}', [DataMasterController::class, 'productListEdit']);
+            Route::put('/edit-product-list/{code_product}', [DataMasterController::class, 'productListUpdate'])->name('productListPut');;
+            Route::delete('/delete-product-list/{code_product}', [DataMasterController::class, 'productListDestroy'])->name('productListDelete');;
+            Route::put('/status-product-list/{code_product}', [DataMasterController::class, 'productListStatusUpdate'])->name('productListStatusPut');;
+        });
     });
     Route::middleware('role:customer')->group(function () {});
 });

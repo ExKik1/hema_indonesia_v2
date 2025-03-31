@@ -253,18 +253,11 @@
                         </li>
                         <li class="submenu">
                             <a href="javascript:void(0);"><img src="{{ asset('admin/img/icons/product.svg') }}"
-                                    alt="img"><span> Product</span> <span class="menu-arrow"></span></a>
+                                    alt="img"><span> Produk</span> <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="productlist.html">Product List</a></li>
-                                <li><a href="addproduct.html">Add Product</a></li>
-                                <li><a href="categorylist.html">Category List</a></li>
-                                <li><a href="addcategory.html">Add Category</a></li>
-                                <li><a href="subcategorylist.html">Sub Category List</a></li>
-                                <li><a href="subaddcategory.html">Add Sub Category</a></li>
-                                <li><a href="brandlist.html">Brand List</a></li>
-                                <li><a href="addbrand.html">Add Brand</a></li>
-                                <li><a href="importproduct.html">Import Products</a></li>
-                                <li><a href="barcode.html">Print Barcode</a></li>
+                                <li><a href="{{ url('/product-list') }}">Data Produk</a></li>
+                                <li><a href="{{ url('/categories') }}">Data Kategori</a></li>
+
                             </ul>
                         </li>
                         <li class="submenu">
@@ -286,7 +279,6 @@
                             <ul>
                                 <li><a href="{{ url('/customer') }}">Data Pelanggan</a></li>
                                 <li><a href="{{ url('gallery-company') }}">Data Galeri</a></li>
-                                <li><a href="{{ url('/categories') }}">Data Kategori</a></li>
                                 <li><a href="{{ url('/faq-company') }}">Data FAQ</a></li>
                             </ul>
                         </li>
