@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
-                            <label>Diskon Produk</label>
+                            <label>Diskon Produk (opsional)</label>
                             <input type="number" value="{{ old('discount') }}" name="discount" id="discount"
                                 autocomplete="off">
                         </div>
@@ -51,7 +51,8 @@
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Kategori Produk <span class="text-danger">*</span></label>
-                            <select class="js-example-basic-single select2" name="category_id" id="js-example-basic-single">
+                            <select class="js-example-basic-single basic select2" name="category_id"
+                                id="js-example-basic-single">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
@@ -62,15 +63,15 @@
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Ukuruan Produk <span class="text-danger">*</span></label>
-                            <select class="form-control tagging" multiple="multiple">
-                                <option>XS</option>
-                                <option>S</option>
-                                <option>M</option>
-                                <option>L</option>
-                                <option>XL</option>
-                                <option>XXL</option>
-                                <option>XXXL</option>
-                                <option>Custom</option>
+                            <select name="size[]" class="form-control basic tagging" multiple="multiple">
+                                <option value="xs">XS</option>
+                                <option value="s">S</option>
+                                <option value="m">M</option>
+                                <option value="l">L</option>
+                                <option value="xl">XL</option>
+                                <option value="xxl">XXL</option>
+                                <option value="xxxl">XXXL</option>
+                                <option value="custom">Custom</option>
                             </select>
                         </div>
                     </div>

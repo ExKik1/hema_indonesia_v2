@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('code_product')->nullable();
             $table->text('description')->nullable();
-            $table->double('price')->nullable();
+            $table->double('price');
             $table->double('discount')->nullable();
+            $table->double('final_price')->nullable();
             $table->unsignedBigInteger('stock')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->enum('size', ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'custom'])->nullable();
+            $table->text('size')->nullable();
             $table->string('image')->nullable();
             $table->boolean('is_active')->nullable();
             $table->timestamps();

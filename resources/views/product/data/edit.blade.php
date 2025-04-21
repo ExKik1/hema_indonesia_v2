@@ -52,7 +52,8 @@
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Kategori Produk <span class="text-danger">*</span></label>
-                            <select class="js-example-basic-single select2" name="category_id" id="js-example-basic-single">
+                            <select class="js-example-basic-single basic select2" name="category_id"
+                                id="js-example-basic-single">
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -65,19 +66,20 @@
                     </div>
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
-                            <label>Ukuruan Produk <span class="text-danger">*</span></label>
-                            <select class="form-control tagging" multiple="multiple">
-                                <option>XS</option>
-                                <option>S</option>
-                                <option>M</option>
-                                <option>L</option>
-                                <option>XL</option>
-                                <option>XXL</option>
-                                <option>XXXL</option>
-                                <option>Custom</option>
+                            <label>Ukuran Produk <span class="text-danger">*</span></label>
+                            <select name="size[]" class="form-control basic tagging" multiple="multiple">
+                                @php
+                                    $sizes = $data->size ? explode(', ', $data->size) : [];
+                                @endphp
+                                @foreach (['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'custom'] as $option)
+                                    <option value="{{ $option }}" {{ in_array($option, $sizes) ? 'selected' : '' }}>
+                                        {{ strtoupper($option) }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
+
                     <div class="col-lg-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Status Produk <span class="text-danger">*</span></label>

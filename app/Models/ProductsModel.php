@@ -13,6 +13,7 @@ class ProductsModel extends Model
         'description',
         'price',
         'discount',
+        'final_price',
         'stock',
         'category_id',
         'size',

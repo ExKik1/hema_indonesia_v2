@@ -19,12 +19,13 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/lightbox/glightbox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
 </head>
@@ -330,6 +331,8 @@
     <script src="{{ asset('admin/plugins/apexchart/chart-data.js') }}"></script>
     <script src="{{ asset('admin/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/select2/js/custom-select.js') }}"></script>
+    <script src="{{ asset('admin/plugins/lightbox/glightbox.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/lightbox/lightbox.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert/sweetalerts.min.js') }}"></script>
     <script src="{{ asset('admin/js/script.js') }}"></script>

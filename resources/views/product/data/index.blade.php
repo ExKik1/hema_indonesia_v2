@@ -96,6 +96,7 @@
                             <th>Gambar</th>
                             <th>Nama</th>
                             <th>Kategori</th>
+                            <th>Stok</th>
                             <th>Harga</th>
                             <th>Ukuran</th>
                             <th>Status</th>
@@ -112,14 +113,30 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <img width="85px" height="70px"
-                                        src="{{ asset('uploads/products/' . $product->image) }}"
-                                        alt="{{ $product->code_product }}">
+                                    <a href="{{ asset('uploads/products/' . $product->image) }}" class="image-popup">
+                                        <img width="85px" height="70px" class="img-fluid"
+                                            src="{{ asset('uploads/products/' . $product->image) }}"
+                                            alt="{{ $product->code_product }}">
+                                    </a>
                                 </td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->categories->name }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>{{ $product->size }}</td>
+                                <td>{{ $product->stock }}</td>
+                                <td>
+                                    <p style="margin-bottom: 5px">Harga Asli: Rp.
+                                        {{ number_format($product->price, 0, ',', '.') }}</p>
+                                    @if ($product->discount > 0)
+                                        <p style="margin-bottom: 5px">Diskon:
+                                            {{ $product->discount }}%</p>
+                                        <p style="margin-bottom: 5px"><strong>Harga Akhir:
+                                                Rp. {{ number_format($product->final_price, 0, ',', '.') }}</strong></p>
+                                    @else
+                                        <p style="margin-bottom: 5px"><strong>Harga: Rp.
+                                                {{ number_format($product->price, 0, ',', '.') }}</strong>
+                                        </p>
+                                    @endif
+                                </td>
+                                <td style="text-transform: uppercase">{{ $product->size }}</td>
                                 <td>
                                     <form style="padding: 0; display: flex;"
                                         action="{{ route('productsListStatusPut', $product->code_product) }}"

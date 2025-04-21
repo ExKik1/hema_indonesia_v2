@@ -32,10 +32,12 @@ class ProductsController extends Controller
             'name' => 'required',
             'code_product' => 'unique:products,code_product',
             'description' => 'required',
-            'price' => 'required',
+            'price' => 'required|min:0',
+            'discount' => 'nullable|min:0|max:100|lte:price',
             'stock' => 'required',
-            // 'categories' => 'required',
-            // 'size' => 'required',
+            'category_id' => 'required',
+            'size' => 'required|array',
+            'size.*' => 'in:xs,s,m,l,xl,xxl,xxxl,custom',
             'is_active' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:1024',
         ], [
@@ -43,9 +45,10 @@ class ProductsController extends Controller
             'code_product.unique' => 'Kode produk tersebut sudah tersedia',
             'description.required' => 'Input deskripsi produk harus diisi',
             'price.required' => 'Input harga produk harus diisi',
+            'discount.max' => 'Maksimal diskon 100%',
             'stock.required' => 'Input stok produk harus diisi',
-            // 'categories.required' => 'Input kategori produk harus diisi',
-            // 'size.required' => 'Input ukuran produk harus diisi',
+            'category_id.required' => 'Input kategori produk harus diisi',
+            'size.required' => 'Input ukuran produk harus diisi',
             'is_active.required' => 'Input status produk harus diisi',
             'image.required' => 'Input gambar produk harus diisi',
             'image.image' => 'File harus berupa gambar.',
@@ -60,15 +63,21 @@ class ProductsController extends Controller
             $name_product = 'products_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
             $file->move('uploads/products', $name_product);
         }
+
+        $price = $request->price;
+        $discount = $request->discount ?? 0;
+        $final_price = $price - ($price * $discount / 100);
+
         ProductsModel::create([
             'name' => $request->name,
             'code_product' => $request->code_product,
             'description' => $request->description,
-            'price' => $request->price,
-            'discount' => $request->discount,
+            'price' => $price,
+            'discount' => $discount,
+            'final_price' => $final_price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
-            'size' => $request->size,
+            'size' => implode(', ', $request->size),
             'image' => $name_product,
             'is_active' => $request->is_active
         ]);
@@ -90,19 +99,22 @@ class ProductsController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required',
+            'price' => 'required|min:0',
+            'discount' => 'nullable|min:0|max:100|lte:price',
             'stock' => 'required',
-            // 'categories' => 'required',
-            // 'size' => 'required',
+            'category_id' => 'required',
+            'size' => 'required|array',
+            'size.*' => 'in:xs,s,m,l,xl,xxl,xxxl,custom',
             'is_active' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg|max:1024',
         ], [
             'name.required' => 'Input first nama produk harus diisi',
             'description.required' => 'Input deskripsi produk harus diisi',
             'price.required' => 'Input harga produk harus diisi',
+            'discount.max' => 'Maksimal diskon 100%',
             'stock.required' => 'Input stok produk harus diisi',
-            // 'categories.required' => 'Input kategori produk harus diisi',
-            // 'size.required' => 'Input ukuran produk harus diisi',
+            'category_id.required' => 'Input kategori produk harus diisi',
+            'size.required' => 'Input ukuran produk harus diisi',
             'is_active.required' => 'Input status produk harus diisi',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
@@ -119,15 +131,19 @@ class ProductsController extends Controller
             $file->move('uploads/products', $name_product);
         }
 
+        $price = $request->price;
+        $discount = $request->discount ?? 0;
+        $final_price = $price - ($price * $discount / 100);
+
         $data->update([
             'name' => $request->name,
             'code_product' => $request->code_product,
             'description' => $request->description,
-            'price' => $request->price,
-            'discount' => $request->discount,
+            'price' => $price,
+            'discount' => $discount,
+            'final_price' => $final_price,
             'stock' => $request->stock,
-            'category_id' => $request->category_id,
-            'size' => $request->size,
+            'size' => implode(', ', $request->size),
             'image' => $name_product
         ]);
 
