@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('admin/plugins/lightbox/glightbox.min.css') }}">
     @vite('resources/css/app.css')
 </head>
 
@@ -180,6 +181,8 @@
     <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('library/magic-grid/magic-grid.min.js') }}"></script>
     <script src="{{ asset('library/preline-ui/preline.js') }}"></script>
+    <script src="{{ asset('admin/plugins/lightbox/glightbox.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/lightbox/lightbox.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/alert.js') }}"></script>
     <script src="{{ asset('js/product.js') }}"></script>

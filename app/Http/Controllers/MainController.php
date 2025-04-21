@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FaqCompanyModel;
+use App\Models\GalleryModel;
 use App\Models\NewsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +35,9 @@ class MainController extends Controller
 
     public function gallery()
     {
-        return view('main.gallery');
+        $data = GalleryModel::where('is_active', 1)->get();
+        $count_gallery = $data->count();
+        return view('main.gallery', compact(['data', 'count_gallery']));
     }
 
     public function faq()

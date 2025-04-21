@@ -28,76 +28,31 @@
     </div>
 
     <section class="gallery container py-24">
+
         <main id="content_gallery" class="content_gallery w-full flex md:gap-[1rem]">
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img class="w-full h-auto" src="{{ asset('images/main/hero-img-1.jpg') }}" alt="">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://wallpapersok.com/images/high/hd-nature-phone-foggy-mountain-m1pz478hctll7i2i.webp"
-                    alt="https://png.pngtree.com/thumb_back/fh260/back_our/20190619/ourmid/pngtree-simple-natural-green-leaf-h5-illustration-image_132970.jpg">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://st2.depositphotos.com/1000276/8912/i/450/depositphotos_89122584-stock-photo-majestic-sunset-in-the-mountains.jpg"
-                    alt="" class="w-full h-auto">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://st2.depositphotos.com/1000276/8912/i/450/depositphotos_89122584-stock-photo-majestic-sunset-in-the-mountains.jpg"
-                    alt="" class="w-full h-auto">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://st2.depositphotos.com/1000276/8912/i/450/depositphotos_89122584-stock-photo-majestic-sunset-in-the-mountains.jpg"
-                    alt="" class="w-full h-auto">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="{{ asset('images/main/hero-img-1.jpg') }}" alt="">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://png.pngtree.com/thumb_back/fh260/back_our/20190619/ourmid/pngtree-simple-natural-green-leaf-h5-illustration-image_132970.jpg"
-                    alt="" class="w-full h-auto">
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://st2.depositphotos.com/1000276/8912/i/450/depositphotos_89122584-stock-photo-majestic-sunset-in-the-mountains.jpg"
-                    alt="" class="w-full h-auto">
+            @if ($count_gallery > 0)
+                @foreach ($data as $gallery)
+                    <div
+                        class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
+                        <div class="">
+                            <a href="{{ asset('uploads/gallery/' . $gallery->image) }}" class="image-popup">
+                                <img class="img-fluid w-full h-auto" src="{{ asset('uploads/gallery/' . $gallery->image) }}"
+                                    alt="{{ $gallery->title }}">
+                            </a>
+                            <div class="text-justify">
+                                <p class="text-gray-800 pt-1.5">{{ $gallery->title }}</p>
+                                <span class="text-sm text-gray-500">{{ $gallery->description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div
+                    class="border shadow-sm text-center flex justify-center items-center w-full lg:w-full border-slate-200 p-5">
+                    <p>Data Gallery tidak dapat ditemukan!</p>
+                </div>
+            @endif
 
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://wallpapersok.com/images/high/hd-nature-phone-foggy-mountain-m1pz478hctll7i2i.webp"
-                    alt="" class="w-full h-auto">
-
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://st2.depositphotos.com/1000276/8912/i/450/depositphotos_89122584-stock-photo-majestic-sunset-in-the-mountains.jpg"
-                    alt="" class="w-full h-auto">
-
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://png.pngtree.com/thumb_back/fh260/back_our/20190619/ourmid/pngtree-simple-natural-green-leaf-h5-illustration-image_132970.jpg"
-                    alt="" class="w-full h-auto">
-
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://wallpapersok.com/images/high/hd-nature-phone-foggy-mountain-m1pz478hctll7i2i.webp"
-                    alt="" class="w-full h-auto">
-
-            </div>
-            <div
-                class="xl:w-[calc(100%_/_4_-_1rem)] md:w-[calc(100%_/_3_-_1rem)] w-[calc(100%_/_2_-_1rem)] h-auto flex justify-center items-center rounded-lg">
-                <img src="https://png.pngtree.com/thumb_back/fh260/back_our/20190619/ourmid/pngtree-simple-natural-green-leaf-h5-illustration-image_132970.jpg"
-                    alt="" class="w-full h-auto">
-
-            </div>
         </main>
     </section>
 @endsection
