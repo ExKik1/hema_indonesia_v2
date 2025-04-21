@@ -11,7 +11,10 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        return view('product.main');
+        $categories_product = CategoriesModel::all();
+        $data = ProductsModel::with('categories')->get();
+        $count_product = $data->count();
+        return view('product.main', compact(['data', 'count_product', 'categories_product']));
     }
 
     public function productsListIndex()
