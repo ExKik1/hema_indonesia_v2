@@ -30,7 +30,8 @@ class MainController extends Controller
 
     public function about()
     {
-        return view('main.about');
+        $data_about = GalleryModel::first();
+        return view('main.about', compact(['data_about']));
     }
 
     public function gallery()
