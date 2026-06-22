@@ -127,6 +127,14 @@
 
     {{-- ═══ SIDEBAR ═══ --}}
     <div class="sidebar" id="sidebar">
+        {{-- Pin button: klik untuk kunci/lepas sidebar --}}
+        <button id="sidebar-pin-btn"
+                title="Kunci Sidebar"
+                data-tooltip="Kunci sidebar"
+                aria-label="Pin sidebar">
+            <i class="bi bi-pin-angle-fill" id="pin-icon"></i>
+        </button>
+
         <div class="sidebar-inner slimscroll">
             <div id="sidebar-menu" class="sidebar-menu">
                 <ul>
@@ -233,6 +241,112 @@
 <script src="{{ asset('admin/js/script.js') }}"></script>
 <script src="{{ asset('admin/js/form-input.js') }}"></script>
 <script src="{{ asset('js/alert.js') }}"></script>
+
+{{-- ═══ SIDEBAR AUTO-HIDE & PIN — JS ═══
+     Logika:
+     1. Sidebar muncul by default
+     2. Klik di luar sidebar (.page-wrapper / .header) → sidebar geser kiri
+     3. Klik konten → sidebar muncul lagi
+     4. Tombol PIN (☉) → sidebar terkunci (tidak auto-hide)
+     Tidak mengubah logika script.js / toggle_btn / mini-sidebar yang ada.
+═══════════════════════════════════════ --}}
+<div id="sidebar-overlay"></div>
+<script>
+(function () {
+    var STORAGE_KEY = 'hema_sidebar_pinned';
+    var body        = document.body;
+    var pinBtn      = document.getElementById('sidebar-pin-btn');
+    var pinIcon     = document.getElementById('pin-icon');
+    var sidebar     = document.getElementById('sidebar');
+    var overlay     = document.getElementById('sidebar-overlay');
+    var isPinned    = localStorage.getItem(STORAGE_KEY) === '1';
+
+    /* ── Terapkan state pin dari localStorage ─────────────── */
+    function applyPin(pinned) {
+        isPinned = pinned;
+        localStorage.setItem(STORAGE_KEY, pinned ? '1' : '0');
+
+        if (pinned) {
+            body.classList.add('sidebar-pinned');
+            body.classList.remove('sidebar-hidden', 'sidebar-float');
+            pinIcon.className     = 'bi bi-pin-fill';
+            pinBtn.setAttribute('data-tooltip', 'Lepas kunci');
+            pinBtn.title          = 'Lepas kunci sidebar';
+        } else {
+            body.classList.remove('sidebar-pinned');
+            pinIcon.className     = 'bi bi-pin-angle-fill';
+            pinBtn.setAttribute('data-tooltip', 'Kunci sidebar');
+            pinBtn.title          = 'Kunci sidebar';
+        }
+    }
+
+    /* ── Tampilkan sidebar (float: tampil di atas konten) ─── */
+    function showSidebar() {
+        if (isPinned) return; // kalau terkunci, tidak perlu float
+        body.classList.remove('sidebar-hidden');
+        body.classList.add('sidebar-float');
+    }
+
+    /* ── Sembunyikan sidebar ──────────────────────────────── */
+    function hideSidebar() {
+        if (isPinned) return;
+        body.classList.add('sidebar-hidden');
+        body.classList.remove('sidebar-float');
+    }
+
+    /* ── Init saat halaman load ───────────────────────────── */
+    applyPin(isPinned);
+
+    /* ── Klik tombol pin ──────────────────────────────────── */
+    if (pinBtn) {
+        pinBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            applyPin(!isPinned);
+        });
+    }
+
+    /* ── Klik overlay (area gelap) → sembunyikan sidebar ─── */
+    if (overlay) {
+        overlay.addEventListener('click', function () {
+            hideSidebar();
+        });
+    }
+
+    /* ── Klik di dalam sidebar → jangan propagate ke document ─ */
+    if (sidebar) {
+        sidebar.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    }
+
+    /* ── Klik di luar sidebar (page-wrapper / header) ─────── */
+    document.addEventListener('click', function (e) {
+        if (isPinned) return;
+
+        var inSidebar = sidebar && sidebar.contains(e.target);
+        var inPinBtn  = pinBtn  && pinBtn.contains(e.target);
+        if (inSidebar || inPinBtn) return;
+
+        // Hanya toggle jika di layar desktop (> 991px)
+        if (window.innerWidth <= 991) return;
+
+        // Klik di konten/topbar: toggle
+        var isHidden = body.classList.contains('sidebar-hidden');
+        if (isHidden) {
+            showSidebar();
+        } else {
+            hideSidebar();
+        }
+    });
+
+    /* ── Jaga ukuran layar ────────────────────────────────── */
+    window.addEventListener('resize', function () {
+        if (window.innerWidth <= 991) {
+            body.classList.remove('sidebar-hidden', 'sidebar-float');
+        }
+    });
+}());
+</script>
 
 </body>
 </html>
