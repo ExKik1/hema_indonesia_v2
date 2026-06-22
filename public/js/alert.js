@@ -1,268 +1,179 @@
 /**
- * Hema Indonesia — Global SweetAlert Handler v3
- *
- * PERBAIKAN UTAMA:
- *   Event delegation via document.addEventListener('click') menggantikan
- *   querySelectorAll + forEach, sehingga tombol yang di-render ulang oleh
- *   DataTables (setelah DOMContentLoaded) tetap terikat handler.
- *
- * Handler yang dikelola:
- *   .btn-delete      → konfirmasi hapus (DELETE)
- *   .confirm-status  → konfirmasi toggle aktif/nonaktif
- *   .confirm-text    → legacy fallback (tipe submit biasa)
+ * Hema Indonesia — SweetAlert Handler
+ * Dipasang di akhir layout-admin.blade.php, setelah sweetalert2.min.js
+ * sehingga Swal sudah pasti terdefinisi saat file ini dijalankan.
  */
 
-/* ─── Warna brand ─────────────────────────────────────────── */
-const BRAND = {
-    primary  : '#b17457',
-    gradient : 'linear-gradient(135deg,#b17457 0%,#c29470 100%)',
-    danger   : '#dc2626',
-};
-
-/* ─── Inject CSS SweetAlert sekali ──────────────────────────
-   Dipanggil saat pertama kali tombol diklik, bukan saat load.
-   Aman untuk DataTables karena tidak bergantung DOM timing. */
-let _swalStyleInjected = false;
-function injectSwalStyles() {
-    if (_swalStyleInjected) return;
-    _swalStyleInjected = true;
-
-    const style = document.createElement('style');
-    style.textContent = `
-        /* ── Popup ── */
-        .swal-hema { font-family:"Urbanist",sans-serif !important; border-radius:16px !important; }
-        .swal-hema .swal2-title   { font-family:"Urbanist",sans-serif !important; font-weight:800; color:#1e1410; font-size:1.15rem; }
-        .swal-hema .swal2-html-container { font-family:"Urbanist",sans-serif !important; color:#7a6255; font-size:.875rem; }
-        .swal-hema .swal2-icon    { border-color:transparent !important; }
-
-        /* ── Confirm merah (hapus) ── */
-        .swal-btn-danger {
-            background:${BRAND.danger} !important; color:#fff !important;
-            border:none !important; padding:10px 28px !important;
-            border-radius:7px !important; font-weight:700 !important;
-            font-family:"Urbanist",sans-serif !important; font-size:14px !important;
-            cursor:pointer; transition:opacity .15s;
-        }
-        .swal-btn-danger:hover { opacity:.85 !important; }
-
-        /* ── Confirm brand (status toggle / generic) ── */
-        .swal-btn-brand {
-            background:${BRAND.gradient} !important; color:#fff !important;
-            border:none !important; padding:10px 28px !important;
-            border-radius:7px !important; font-weight:700 !important;
-            font-family:"Urbanist",sans-serif !important; font-size:14px !important;
-            cursor:pointer; transition:opacity .15s;
-        }
-        .swal-btn-brand:hover { opacity:.85 !important; }
-
-        /* ── Cancel ── */
-        .swal-btn-cancel {
-            background:#f0efed !important; color:#3d2e26 !important;
-            border:1.5px solid #d5cfc9 !important; padding:10px 28px !important;
-            border-radius:7px !important; font-weight:600 !important;
-            font-family:"Urbanist",sans-serif !important; font-size:14px !important;
-            cursor:pointer; transition:background .15s;
-        }
-        .swal-btn-cancel:hover { background:#e4e0db !important; }
-    `;
+/* ── CSS SweetAlert (inject sekali) ─────────────────────── */
+(function () {
+    var style = document.createElement('style');
+    style.textContent = [
+        '.swal-hema{font-family:"Urbanist",sans-serif!important;border-radius:16px!important}',
+        '.swal-hema .swal2-title{font-family:"Urbanist",sans-serif!important;font-weight:800;color:#1e1410;font-size:1.15rem}',
+        '.swal-hema .swal2-html-container{font-family:"Urbanist",sans-serif!important;color:#7a6255;font-size:.875rem}',
+        '.swal-btn-danger{background:#dc2626!important;color:#fff!important;border:none!important;padding:10px 28px!important;border-radius:7px!important;font-weight:700!important;font-family:"Urbanist",sans-serif!important;font-size:14px!important;cursor:pointer}',
+        '.swal-btn-brand{background:linear-gradient(135deg,#b17457,#c29470)!important;color:#fff!important;border:none!important;padding:10px 28px!important;border-radius:7px!important;font-weight:700!important;font-family:"Urbanist",sans-serif!important;font-size:14px!important;cursor:pointer}',
+        '.swal-btn-cancel{background:#f0efed!important;color:#3d2e26!important;border:1.5px solid #d5cfc9!important;padding:10px 28px!important;border-radius:7px!important;font-weight:600!important;font-family:"Urbanist",sans-serif!important;font-size:14px!important;cursor:pointer}',
+    ].join('');
     document.head.appendChild(style);
-}
+}());
 
-/* ─── Helper: popup konfirmasi seragam ──────────────────── */
-function swalConfirm({ title, html, confirmText, confirmClass }) {
-    injectSwalStyles();
+/* ── Helper konfirmasi ───────────────────────────────────── */
+function hemaSwalConfirm(opts) {
     return Swal.fire({
-        title,
-        html,
+        title            : opts.title,
+        html             : opts.html || '',
         icon             : 'warning',
         showCancelButton : true,
-        confirmButtonText: confirmText ?? 'Ya, Lanjutkan',
+        confirmButtonText: opts.confirmText || 'Ya',
         cancelButtonText : 'Batal',
         reverseButtons   : true,
         buttonsStyling   : false,
         customClass      : {
             popup         : 'swal-hema',
-            confirmButton : confirmClass ?? 'swal-btn-brand',
+            confirmButton : opts.confirmClass || 'swal-btn-brand',
             cancelButton  : 'swal-btn-cancel',
         },
     });
 }
 
 /* ════════════════════════════════════════════════════════════
-   EVENT DELEGATION — dipasang saat window 'load' (bukan
-   DOMContentLoaded) agar sweetalert2.min.js sudah pasti
-   terdefinisi dan DataTables sudah selesai render.
-   Satu listener di document menangkap SEMUA klik termasuk
-   elemen yang di-render ulang oleh DataTables.
+   EVENT DELEGATION — satu listener di document
+   Menangkap klik dari SEMUA elemen termasuk hasil render
+   DataTables yang muncul setelah halaman pertama kali load.
 ════════════════════════════════════════════════════════════ */
-window.addEventListener('load', function () {
+document.addEventListener('click', function (e) {
 
-document.addEventListener('click', async function (e) {
-
-    /* ── 1. Konfirmasi HAPUS (.btn-delete) ────────────────────
-       HTML yang dibutuhkan di blade:
-         <button type="button"
-                 class="btn btn-sm btn-soft-danger btn-delete"
-                 data-form="form-del-prod-xxx"
-                 data-name="Nama Produk"
-                 data-type="Produk">
-             <i class="bi bi-trash"></i>
-         </button>
-         <form id="form-del-prod-xxx" class="d-none" method="POST"
-               action="{{ route('...') }}">
-             @csrf @method('DELETE')
-         </form>
-    ──────────────────────────────────────────────────────── */
-    const deleteBtn = e.target.closest('.btn-delete');
+    /* ── 1. Tombol Hapus (.btn-delete) ────────────────────── */
+    var deleteBtn = e.target.closest('.btn-delete');
     if (deleteBtn) {
         e.preventDefault();
         e.stopPropagation();
 
-        const formId   = deleteBtn.dataset.form ?? '';
-        const itemName = deleteBtn.dataset.name ?? 'item ini';
-        const itemType = deleteBtn.dataset.type ?? 'Data';
-        const form     = document.getElementById(formId);
+        var formId   = deleteBtn.getAttribute('data-form') || '';
+        var itemName = deleteBtn.getAttribute('data-name') || 'item ini';
+        var itemType = deleteBtn.getAttribute('data-type') || 'Data';
+        var form     = document.getElementById(formId);
 
         if (!form) {
-            console.error('[alert.js] Form tidak ditemukan, id:', formId);
+            console.error('[alert.js] Form tidak ditemukan:', formId);
             return;
         }
 
-        const result = await swalConfirm({
-            title        : `Hapus ${itemType}?`,
-            html         : `<p>Kamu akan menghapus <strong>"${itemName}"</strong>.</p>
-                            <p style="margin-top:8px;color:#ef4444;font-size:.8rem;">
-                                ⚠️ Tindakan ini <strong>tidak dapat dibatalkan</strong>.
-                            </p>`,
-            confirmText  : 'Ya, Hapus!',
-            confirmClass : 'swal-btn-danger',
+        hemaSwalConfirm({
+            title       : 'Hapus ' + itemType + '?',
+            html        : '<p>Kamu akan menghapus <strong>"' + itemName + '"</strong>.</p>'
+                        + '<p style="margin-top:8px;color:#ef4444;font-size:.82rem;">'
+                        + '&#9888; Tindakan ini <strong>tidak dapat dibatalkan</strong>.</p>',
+            confirmText : 'Ya, Hapus!',
+            confirmClass: 'swal-btn-danger',
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                form.submit();
+            }
         });
 
-        if (result.isConfirmed) {
-            injectSwalStyles();
-            Swal.fire({
-                title            : 'Menghapus...',
-                allowOutsideClick: false,
-                showConfirmButton : false,
-                customClass      : { popup: 'swal-hema' },
-                didOpen          : () => Swal.showLoading(),
-            });
-            form.submit();
-        }
-        return; // jangan lanjut ke handler lain
+        return;
     }
 
-    /* ── 2. Konfirmasi STATUS TOGGLE (.confirm-status) ────────
-       Tombol di dalam <form> dengan checkbox di dalamnya.
-    ──────────────────────────────────────────────────────── */
-    const statusBtn = e.target.closest('.confirm-status');
+    /* ── 2. Toggle Status (.confirm-status) ──────────────── */
+    var statusBtn = e.target.closest('.confirm-status');
     if (statusBtn) {
         e.preventDefault();
         e.stopPropagation();
 
-        const form      = statusBtn.closest('form');
-        const checkbox  = form?.querySelector('input[type="checkbox"]');
-        const isActive  = checkbox?.checked ?? false;
-        const action    = isActive ? 'Nonaktifkan' : 'Aktifkan';
-        const newStatus = isActive ? 'Tidak Aktif' : 'Aktif';
+        var form2     = statusBtn.closest('form');
+        var checkbox  = form2 ? form2.querySelector('input[type="checkbox"]') : null;
+        var isActive  = checkbox ? checkbox.checked : false;
+        var action    = isActive ? 'Nonaktifkan' : 'Aktifkan';
+        var newStatus = isActive ? 'Tidak Aktif' : 'Aktif';
 
-        const result = await swalConfirm({
-            title        : `${action} item ini?`,
-            html         : `<p>Status akan diubah menjadi <strong>${newStatus}</strong>.</p>`,
-            confirmText  : `Ya, ${action}`,
-            confirmClass : 'swal-btn-brand',
+        hemaSwalConfirm({
+            title       : action + ' item ini?',
+            html        : '<p>Status akan diubah menjadi <strong>' + newStatus + '</strong>.</p>',
+            confirmText : 'Ya, ' + action,
+            confirmClass: 'swal-btn-brand',
+        }).then(function (result) {
+            if (result.isConfirmed && form2) {
+                form2.submit();
+            }
         });
 
-        if (result.isConfirmed && form) {
-            form.submit();
-        }
         return;
     }
 
-    /* ── 3. Legacy fallback (.confirm-text, type=submit) ──────
-       Mendukung tombol lama yang masih ada di beberapa blade.
-       Cara kerja: tombol ini type=submit, kita cancel submit-nya,
-       tampilkan dialog, baru submit form secara manual.
-    ──────────────────────────────────────────────────────── */
-    const legacyBtn = e.target.closest('.confirm-text');
-    if (legacyBtn && !legacyBtn.classList.contains('btn-delete')) {
+    /* ── 3. Legacy (.confirm-text) ───────────────────────── */
+    var legacyBtn = e.target.closest('.confirm-text');
+    if (legacyBtn) {
         e.preventDefault();
         e.stopPropagation();
 
-        const form = legacyBtn.closest('form');
-        if (!form) return;
+        var form3 = legacyBtn.closest('form');
+        if (!form3) return;
 
-        const result = await swalConfirm({
-            title        : 'Hapus data ini?',
-            html         : '<p style="color:#ef4444;font-size:.82rem;">Tindakan ini tidak dapat dibatalkan.</p>',
-            confirmText  : 'Ya, Hapus!',
-            confirmClass : 'swal-btn-danger',
+        hemaSwalConfirm({
+            title       : 'Hapus data ini?',
+            html        : '<p style="color:#ef4444;font-size:.82rem;">Tindakan ini tidak dapat dibatalkan.</p>',
+            confirmText : 'Ya, Hapus!',
+            confirmClass: 'swal-btn-danger',
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                form3.submit();
+            }
         });
-
-        if (result.isConfirmed) {
-            form.submit();
-        }
     }
 });
 
-}); // end window.addEventListener('load')
-
 /* ════════════════════════════════════════════════════════════
-   FLASH MESSAGES — dari Laravel session via <meta> di layout
-   Ini tetap di DOMContentLoaded karena meta sudah ada di DOM
-   sebelum DataTables berjalan.
+   FLASH MESSAGES — dari Laravel session via <meta>
 ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function () {
 
-    const successMsg   = document.querySelector('meta[name="success"]')?.content?.trim();
-    const successTimer = document.querySelector('meta[name="success_timer"]')?.content?.trim();
-    const errorMsg     = document.querySelector('meta[name="error"]')?.content?.trim();
-    const errorsRaw    = document.querySelector('meta[name="errors"]')?.content || '[]';
-    let   validErrors  = [];
+    var successMsg   = (document.querySelector('meta[name="success"]')   || {}).content || '';
+    var successTimer = (document.querySelector('meta[name="success_timer"]') || {}).content || '';
+    var errorMsg     = (document.querySelector('meta[name="error"]')     || {}).content || '';
+    var errorsRaw    = (document.querySelector('meta[name="errors"]')    || {}).content || '[]';
+    var validErrors  = [];
 
-    try { validErrors = JSON.parse(errorsRaw); } catch (_) {}
+    try { validErrors = JSON.parse(errorsRaw); } catch (e) {}
 
-    /* Hanya tampilkan jika ada konten */
-    if (successMsg) {
-        injectSwalStyles();
+    if (successMsg.trim()) {
         Swal.fire({
-            title        : successMsg,
-            icon         : 'success',
-            buttonsStyling: false,
-            customClass  : { popup: 'swal-hema', confirmButton: 'swal-btn-brand' },
+            title          : successMsg,
+            icon           : 'success',
+            buttonsStyling : false,
+            customClass    : { popup: 'swal-hema', confirmButton: 'swal-btn-brand' },
         });
     }
 
-    if (successTimer) {
-        injectSwalStyles();
+    if (successTimer.trim()) {
         Swal.fire({
             title            : successTimer,
             icon             : 'success',
-            showConfirmButton : false,
+            showConfirmButton: false,
             timer            : 1800,
             timerProgressBar : true,
             customClass      : { popup: 'swal-hema' },
         });
     }
 
-    if (errorMsg) {
-        injectSwalStyles();
+    if (errorMsg.trim()) {
         Swal.fire({
-            title        : 'Terjadi Kesalahan',
-            html         : `<p>${errorMsg}</p>`,
-            icon         : 'error',
-            buttonsStyling: false,
-            customClass  : { popup: 'swal-hema', confirmButton: 'swal-btn-brand' },
+            title          : 'Terjadi Kesalahan',
+            html           : '<p>' + errorMsg + '</p>',
+            icon           : 'error',
+            buttonsStyling : false,
+            customClass    : { popup: 'swal-hema', confirmButton: 'swal-btn-brand' },
         });
     }
 
     if (validErrors.length > 0) {
-        injectSwalStyles();
+        var listHtml = '<ul style="text-align:left;padding-left:18px;margin:0;line-height:1.9;">'
+            + validErrors.map(function (e) { return '<li>' + e + '</li>'; }).join('')
+            + '</ul>';
         Swal.fire({
             title            : 'Data Tidak Valid',
-            html             : '<ul style="text-align:left;padding-left:18px;margin:0;line-height:1.9;">'
-                             + validErrors.map(e => `<li>${e}</li>`).join('')
-                             + '</ul>',
+            html             : listHtml,
             icon             : 'warning',
             confirmButtonText: 'Oke, Periksa Kembali',
             buttonsStyling   : false,
