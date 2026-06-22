@@ -288,25 +288,25 @@
     </div>
     {{-- Auto-scroll strip --}}
     <div class="wrapper-scroll">
-        @foreach($hero_gallery as $g)
-        <div class="item-scroll">
-            <a href="{{ asset('uploads/gallery/'.$g->image) }}" class="image-popup">
-                <img src="{{ asset('uploads/gallery/'.$g->image) }}"
-                     alt="{{ $g->title }}"
-                     style="height:220px;width:280px;object-fit:cover;border-radius:12px;
-                            border:1.5px solid #ede3db;">
-            </a>
+        {{-- Track pertama --}}
+        <div class="scroll-track">
+            @foreach($hero_gallery as $g)
+            <div class="item-scroll">
+                <a href="{{ asset('uploads/gallery/'.$g->image) }}" class="image-popup">
+                    <img src="{{ asset('uploads/gallery/'.$g->image) }}"
+                         alt="{{ $g->title }}">
+                </a>
+            </div>
+            @endforeach
         </div>
-        @endforeach
-        {{-- Duplikasi untuk efek infinite scroll tanpa JS --}}
-        @foreach($hero_gallery as $g)
-        <div class="item-scroll" aria-hidden="true">
-            <img src="{{ asset('uploads/gallery/'.$g->image) }}"
-                 alt=""
-                 style="height:220px;width:280px;object-fit:cover;border-radius:12px;
-                        border:1.5px solid #ede3db;">
+        {{-- Track duplikasi untuk infinite loop tanpa jeda --}}
+        <div class="scroll-track" aria-hidden="true">
+            @foreach($hero_gallery as $g)
+            <div class="item-scroll">
+                <img src="{{ asset('uploads/gallery/'.$g->image) }}" alt="">
+            </div>
+            @endforeach
         </div>
-        @endforeach
     </div>
 </section>
 @endif
