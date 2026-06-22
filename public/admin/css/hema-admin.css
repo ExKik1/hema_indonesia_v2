@@ -231,7 +231,7 @@ body {
 }
 .sidebar-menu > ul > li > a:hover {
   background: var(--sb-hov-bg) !important;
-  color     : var(--sb-txt) !important;
+  color     : #ffffff !important;
 }
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
@@ -252,7 +252,7 @@ body {
   flex-shrink: 0 !important;
   transition : color .15s !important;
 }
-.sidebar-menu > ul > li > a:hover .bi { color: var(--sb-txt) !important; }
+.sidebar-menu > ul > li > a:hover .bi { color: #ffffff !important; }
 .sidebar-menu > ul > li.active > a .bi { color: #ffffff !important; }
 
 /* Icon SVG/IMG */
@@ -264,7 +264,7 @@ body {
   transition: filter .15s !important;
 }
 .sidebar-menu > ul > li > a:hover img {
-  filter: brightness(0) saturate(0) opacity(0.8) !important;
+  filter: brightness(0) invert(1) !important;
 }
 .sidebar-menu > ul > li.active > a img {
   filter: brightness(0) invert(1) !important;
