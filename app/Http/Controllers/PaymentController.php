@@ -20,7 +20,7 @@ class PaymentController extends Controller
             : 'https://app.sandbox.midtrans.com';
     }
 
-    public function pay($id)
+    public function pay(Request $request, $id)
     {
         $order = OrderModel::with('details.product', 'user')
             ->where('id', $id)
@@ -65,6 +65,18 @@ class PaymentController extends Controller
             ],
         ];
 
+        /*
+         * enabled_payments — tampilkan HANYA metode yang dipilih customer
+         * di halaman pay.blade.php sebelum popup Midtrans terbuka.
+         * Dikirim via query string: /orders/{id}/pay?method=qris
+         * Metode yang didukung: qris, bri_va, bca_va
+         */
+        $allowedMethods = ['qris', 'bri_va', 'bca_va'];
+        $chosenMethod   = $request->query('method');
+        if ($chosenMethod && in_array($chosenMethod, $allowedMethods)) {
+            $payload['enabled_payments'] = [$chosenMethod];
+        }
+
         $response = Http::withBasicAuth($serverKey, '')
             ->acceptJson()
             ->post($this->snapBaseUrl() . '/snap/v1/transactions', $payload);
@@ -84,6 +96,12 @@ class PaymentController extends Controller
 
         $clientKey = config('services.midtrans.client_key');
         $snapJs = $this->snapBaseUrl() . '/snap/snap.js';
+
+        // Jika ada method terpilih → tampilkan snap langsung (snap.blade.php)
+        // Jika tidak ada method → tampilkan halaman pilih metode (pay.blade.php)
+        if ($chosenMethod && in_array($chosenMethod, $allowedMethods)) {
+            return view('payment.snap', compact('order', 'token', 'clientKey', 'snapJs', 'chosenMethod'));
+        }
 
         return view('payment.pay', compact('order', 'token', 'clientKey', 'snapJs'));
     }
