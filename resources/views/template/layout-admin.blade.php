@@ -132,16 +132,15 @@
             <div id="sidebar-menu" class="sidebar-menu">
                 <ul>
 
+                    {{-- ── Main (satu-satunya section title, sesuai foto) ── --}}
+                    <li class="menu-title"><span>Main</span></li>
+
                     {{-- ── Dashboard ── --}}
                     <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
                         <a href="{{ url('dashboard') }}">
-                            <i class="bi bi-grid-1x2-fill"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
-
-                    {{-- ── KATALOG ── --}}
-                    <li class="menu-title"><span>Katalog</span></li>
 
                     {{-- Produk (submenu) --}}
                     @php
@@ -151,7 +150,6 @@
                         <a href="javascript:void(0);"
                            class="sidebar-submenu-toggle"
                            aria-expanded="{{ $produkOpen ? 'true' : 'false' }}">
-                            <i class="bi bi-box-seam"></i>
                             <span>Produk</span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -165,27 +163,22 @@
                         </ul>
                     </li>
 
-                    {{-- ── TRANSAKSI ── --}}
-                    <li class="menu-title"><span>Transaksi</span></li>
-
                     {{-- Pesanan --}}
                     <li class="{{ request()->is('order-list*') ? 'active' : '' }}">
                         <a href="{{ url('/order-list') }}">
-                            <i class="bi bi-bag-check"></i>
                             <span>Pesanan</span>
                         </a>
                     </li>
 
-                    {{-- ── MASTER ── --}}
-                    <li class="menu-title"><span>Master</span></li>
-
                     {{-- Pelanggan --}}
                     <li class="{{ request()->is('customer*') ? 'active' : '' }}">
                         <a href="{{ url('/customer') }}">
-                            <i class="bi bi-people"></i>
                             <span>Pelanggan</span>
                         </a>
                     </li>
+
+                    {{-- Spasi/gap sebelum Konten Web (sesuai foto) --}}
+                    <li class="menu-gap" aria-hidden="true"></li>
 
                     {{-- Konten Web (submenu) --}}
                     @php
@@ -195,7 +188,6 @@
                         <a href="javascript:void(0);"
                            class="sidebar-submenu-toggle"
                            aria-expanded="{{ $kontenOpen ? 'true' : 'false' }}">
-                            <i class="bi bi-building"></i>
                             <span>Konten Web</span>
                             <span class="menu-arrow"></span>
                         </a>

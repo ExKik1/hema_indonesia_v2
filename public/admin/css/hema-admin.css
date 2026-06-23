@@ -30,9 +30,9 @@
   --sb-txt     : #5c6670;            /* teks menu abu gelap   */
   --sb-lbl     : #9aa0a6;            /* judul section abu     */
   --sb-sub     : #6b7280;            /* teks submenu          */
-  --sb-act-bg  : #fff1e6;            /* highlight aktif peach */
-  --sb-act-tx  : #f59f43;            /* teks/ikon aktif oranye*/
-  --sb-hov-bg  : #f6f7f9;            /* hover abu sangat muda */
+  --sb-act-bg  : #fdeee2;            /* highlight aktif peach (foto) */
+  --sb-act-tx  : #ff9f43;            /* teks aktif oranye (foto)     */
+  --sb-hov-bg  : #f7f8fa;            /* hover abu sangat muda        */
   --sb-shadow  : none;               /* tanpa bayangan tebal  */
   --sb-border  : #eef0f2;            /* garis pemisah         */
 
@@ -258,19 +258,28 @@ body.mini-sidebar.expand-menu #toggle_btn::before {
   animation : none !important;
 }
 
-/* Section label */
+/* Section label "Main" — navy gelap & tebal (sesuai foto) */
 .sidebar-menu ul li.menu-title,
 .sidebar-menu ul li.menu-title span {
-  color         : var(--sb-lbl) !important;
+  color         : #1b2a4a !important;
   background    : transparent !important;
-  font-size     : 11px !important;
+  font-size     : 13px !important;
   font-weight   : 700 !important;
-  letter-spacing: 1px !important;
-  text-transform: uppercase !important;
-  padding       : 18px 24px 6px !important;
+  letter-spacing: .2px !important;
+  text-transform: none !important;
+  padding       : 18px 22px 10px !important;
   pointer-events: none !important;
   user-select   : none !important;
   display       : block !important;
+}
+
+/* Spacer/gap antar grup (sesuai foto, sebelum "Konten Web") */
+.sidebar-menu ul li.menu-gap {
+  display   : block !important;
+  height    : 22px !important;
+  padding   : 0 !important;
+  margin    : 0 !important;
+  list-style: none !important;
 }
 
 /* Menu item */
@@ -329,33 +338,27 @@ body.mini-sidebar.expand-menu #toggle_btn::before {
   filter: none !important;
 }
 
-/* Menu arrow — chevron › di kanan (mirip referensi) */
-.menu-arrow {
-  margin-left  : auto !important;
-  width        : 16px !important;
-  height       : 16px !important;
-  background   : transparent !important;
-  border-radius: 0 !important;
-  position     : relative !important;
-}
-.menu-arrow::before {
+/* Chevron › di kanan SEMUA item top-level (sesuai foto) */
+.menu-arrow { display: none !important; }  /* span lama tidak dipakai */
+
+.sidebar-menu > ul > li > a::after {
   content      : "" !important;
-  position     : absolute !important;
-  top          : 50% !important;
-  right        : 2px !important;
+  margin-left  : auto !important;
   width        : 7px !important;
   height       : 7px !important;
-  border-right : 2px solid var(--sb-lbl) !important;
-  border-bottom: 2px solid var(--sb-lbl) !important;
-  transform    : translateY(-60%) rotate(-45deg) !important;
+  border-right : 2px solid #b9c0cb !important;
+  border-bottom: 2px solid #b9c0cb !important;
+  transform    : rotate(-45deg) !important;
+  flex-shrink  : 0 !important;
   transition   : transform .2s ease, border-color .15s !important;
 }
-/* Saat submenu terbuka → chevron menghadap bawah */
-.submenu.subdrop > a .menu-arrow::before {
-  transform: translateY(-30%) rotate(45deg) !important;
+/* Submenu terbuka → chevron menghadap bawah ⌄ */
+.submenu.subdrop > a::after {
+  transform: rotate(45deg) !important;
 }
-.sidebar-menu > ul > li > a:hover .menu-arrow::before,
-.sidebar-menu > ul > li.active > a .menu-arrow::before {
+/* Hover & aktif → chevron oranye */
+.sidebar-menu > ul > li > a:hover::after,
+.sidebar-menu > ul > li.active > a::after {
   border-color: var(--sb-act-tx) !important;
 }
 
