@@ -66,16 +66,22 @@ class PaymentController extends Controller
         ];
 
         /*
-         * enabled_payments — tampilkan HANYA metode yang dipilih customer
-         * di halaman pay.blade.php sebelum popup Midtrans terbuka.
-         * Dikirim via query string: /orders/{id}/pay?method=qris
-         * Metode yang didukung: qris, bri_va, bca_va
+         * enabled_payments — hanya kirim jika metode yang dipilih
+         * sudah pasti aktif di Midtrans Dashboard.
+         *
+         * CATATAN: Jika metode belum diaktifkan di Midtrans Dashboard
+         * (Settings → Snap Preferences → Payment Channels), Midtrans
+         * akan menampilkan "Metode pembayaran tidak tersedia".
+         *
+         * Untuk saat ini: kirim tanpa enabled_payments agar Midtrans
+         * menampilkan SEMUA metode yang aktif di Dashboard.
+         * Customer sudah memilih preferensi di halaman kita sebelumnya.
+         *
+         * Aktifkan enabled_payments kembali setelah metode diaktifkan
+         * di Midtrans Dashboard (Settings → Snap Preferences).
          */
         $allowedMethods = ['qris', 'bri_va', 'bca_va'];
         $chosenMethod   = $request->query('method');
-        if ($chosenMethod && in_array($chosenMethod, $allowedMethods)) {
-            $payload['enabled_payments'] = [$chosenMethod];
-        }
 
         $response = Http::withBasicAuth($serverKey, '')
             ->acceptJson()
